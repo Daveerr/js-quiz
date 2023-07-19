@@ -78,3 +78,11 @@ var questions = [
     options: ["terminal or bash", "console.log", "for loops", "Javascript"],
   },
 ];
+
+var questionsEl = document.querySelector("#questions");
+var timerEl = document.querySelector("#timer");
+var choicesEl = document.querySelector("#options");
+var submitBtn = document.querySelector("#submit-score");
+var startBtn = document.querySelector("#start");
+var nameEl = document.querySelector("#name");
+var feedbackEl = document.querySelector("#feedback");
