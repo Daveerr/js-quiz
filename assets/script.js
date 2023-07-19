@@ -86,3 +86,86 @@ var submitBtn = document.querySelector("#submit-score");
 var startBtn = document.querySelector("#start");
 var nameEl = document.querySelector("#name");
 var feedbackEl = document.querySelector("#feedback");
+
+// quiz's initial state
+
+var currentQuestionIndex = 0;
+var time = questions.length * 15;
+var timerId;
+
+// Event listener for the "Start Quiz" button click
+startBtn.addEventListener("click", function () {
+  quizStart();
+});
+
+// Function to start the quiz
+function quizStart() {
+  var startScreenEl = document.querySelector(".container"); // Correct class name here
+  startScreenEl.classList.add("hide");
+
+  var questionsSectionEl = document.getElementById("questions"); // Use getElementById for ID selection
+  questionsSectionEl.classList.remove("hide");
+
+  // Starts the timer
+  timerId = setInterval(clockTick, 1000);
+  timerEl.textContent = time;
+
+  // Display the question
+  getQuestion();
+}
+
+// Function to handle the timer tick
+function clockTick() {
+  time--;
+
+  if (time <= 0) {
+    clearInterval(timerId); // Stop the timer
+  } else {
+    timerEl.textContent = time; // Update the timer display
+  }
+}
+
+// loop thru array of questions and answers
+
+function getQuestion() {
+  var currentQuestion = questions[currentQuestionIndex];
+  var promptEl = document.getElementById("question-words");
+  promptEl.textContent = currentQuestion.question;
+  choicesEl.innerHTML = "";
+
+  currentQuestion.options.forEach(function (choice, i) {
+    var choiceBtn = document.createElement("button");
+    choiceBtn.setAttribute("value", choice);
+    choiceBtn.textContent = i + 1 + ". " + choice;
+    choiceBtn.onclick = questionClick;
+    choicesEl.appendChild(choiceBtn);
+  });
+}
+// function to handle when a question option is clicked
+function questionClick(event) {
+  var selectedOption = event.target.value;
+  var currentQuestion = questions[currentQuestionIndex];
+
+  if (selectedOption === currentQuestion.answer) {
+    feedbackEl.textContent = "Correct!";
+  } else {
+    feedbackEl.textContent = "Wrong!";
+    time -= 10;
+  }
+
+  // display the feedback
+  feedbackEl.classList.remove("hide");
+  setTimeout(function () {
+    feedbackEl.classList.add("hide");
+  }, 1000);
+
+  // move to the next question
+  currentQuestionIndex++;
+
+  // check if the quiz is finished
+  if (currentQuestionIndex === questions.length) {
+    quizEnd();
+  } else {
+    getQuestion();
+  }
+}

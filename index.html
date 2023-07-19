@@ -14,8 +14,12 @@
           <span id="timer">0</span>
         </p>
       </div>
-      <div class="start-btn"><button>Start Quiz</button></div>
-      <div class="hs-btn"><button>HighScores</button></div>
+      <div class="start-btn">
+        <button id="start">Start Quiz</button>
+      </div>
+      <div class="hs-btn">
+        <button id="submit-score">HighScores</button>
+      </div>
       <h3>Code Quiz</h3>
       <div class="rules">
         <ul>
@@ -25,6 +29,18 @@
         </ul>
       </div>
     </div>
+
+    <div id="questions" class="hide">
+      <h2 id="question-words">Question Placeholder</h2>
+      <div id="options"></div>
+      <p id="feedback" class="feedback hide"></p>
+    </div>
+    <div id="quiz-end" class="hide">
+      <p>Final Score: <span id="score-final">0</span></p>
+      <input type="text" id="name" placeholder="Your Name" />
+      <button id="submit-score">Submit</button>
+    </div>
+
     <script src="./assets/script.js"></script>
   </body>
 </html>
