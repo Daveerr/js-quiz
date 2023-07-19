@@ -7,20 +7,24 @@
     <title>Code Quiz</title>
   </head>
   <body>
-    <div class="container">
+    <header class="header">
+      <div class="hs-btn">
+        <a href="highscore.html"
+          ><button id="see-scores">High Scores</button></a
+        >
+      </div>
       <div class="timer">
         <p>
           Time:
           <span id="timer">0</span>
         </p>
       </div>
+    </header>
+    <div class="container">
       <div class="start-btn">
         <button id="start">Start Quiz</button>
       </div>
-      <div class="hs-btn">
-        <button id="submit-score">High Scores</button>
-      </div>
-      <h2>Code Quiz</h2>
+      <h2 class="quiz-title">Code Quiz</h2>
       <div class="rules">
         <p class="info">
           A timed quiz related to coding, answer the following questions before
@@ -29,15 +33,19 @@
       </div>
     </div>
 
+    <div id="high-scores" class="hide">
+      <h2>High Scores</h2>
+      <ul id="high-scores-list"></ul>
+    </div>
     <div id="questions" class="hide">
-      <h2 id="question-words">Question Placeholder</h2>
-      <div id="options"></div>
+      <h2 class="quiz-questions" id="question-words">Question Placeholder</h2>
+      <div class="options-btn" id="options"></div>
       <p id="feedback" class="feedback hide"></p>
     </div>
     <div id="quiz-end" class="hide">
       <p>Final Score: <span id="score-final">0</span></p>
-      <input type="text" id="name" placeholder="Your Name" />
-      <button id="submit-score">Submit</button>
+      <input class="input-box" type="text" id="name" placeholder="Your Name" />
+      <button class="submit-btn" id="submit-score">Submit</button>
     </div>
 
     <script src="./assets/script.js"></script>

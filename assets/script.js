@@ -87,19 +87,16 @@ var submitBtn = document.querySelector("#submit-score");
 var startBtn = document.querySelector("#start");
 var nameEl = document.querySelector("#name");
 var feedbackEl = document.querySelector("#feedback");
+var viewHighScoresBtn = document.querySelector("#high-scores-btn");
 
-// quiz's initial state
+// quiz initial state
 
 var currentQuestionIndex = 0;
 var time = questions.length * 15;
 var timerId;
 
-// event listener for "Start Quiz" button click
-startBtn.addEventListener("click", function () {
-  quizStart();
-});
+// start quiz and hide frontpage
 
-// function to start the quiz
 function quizStart() {
   var startScreenEl = document.querySelector(".container");
   startScreenEl.classList.add("hide");
@@ -107,28 +104,15 @@ function quizStart() {
   var questionsSectionEl = document.getElementById("questions");
   questionsSectionEl.classList.remove("hide");
 
-  // Starts the timer
+  // starts the timer
   timerId = setInterval(clockTick, 1000);
   timerEl.textContent = time;
 
-  // Display the question
-  getQuestion();
+  displayQuestion();
 }
 
-// Function to handle the timer tick
-function clockTick() {
-  time--;
-
-  if (time <= 0) {
-    clearInterval(timerId); // Stop the timer
-  } else {
-    timerEl.textContent = time;
-  }
-}
-
-// loop thru array of questions and answers
-
-function getQuestion() {
+// function to display question
+function displayQuestion() {
   var currentQuestion = questions[currentQuestionIndex];
   var promptEl = document.getElementById("question-words");
   promptEl.textContent = currentQuestion.question;
@@ -140,42 +124,81 @@ function getQuestion() {
     choiceBtn.textContent = i + 1 + ". " + choice;
     choiceBtn.onclick = questionClick;
     choicesEl.appendChild(choiceBtn);
+    choiceBtn.classList.add("options-btn");
   });
 }
-// function to handle when a question option is clicked
-function questionClick(event) {
-  var selectedOption = event.target.value;
-  var currentQuestion = questions[currentQuestionIndex];
 
-  if (selectedOption === currentQuestion.answer) {
-    feedbackEl.textContent = "Correct!";
-  } else {
-    feedbackEl.textContent = "Wrong!";
+// check for right answers
+
+function questionClick() {
+  if (this.value !== questions[currentQuestionIndex].answer) {
     time -= 10;
+    if (time < 0) {
+      time = 0;
+    }
+    timerEl.textContent = time;
+    feedbackEl.textContent = `Wrong! The correct answer was ${questions[currentQuestionIndex].answer}.`;
+    feedbackEl.style.color = "red";
+  } else {
+    feedbackEl.textContent = "Correct!";
+    feedbackEl.style.color = "green";
   }
-
-  // display the feedback
-  feedbackEl.classList.remove("hide");
+  feedbackEl.setAttribute("class", "feedback");
   setTimeout(function () {
-    feedbackEl.classList.add("hide");
-  }, 1000);
-
-  // move to the next question
+    feedbackEl.setAttribute("class", "feedback hide");
+  }, 2000);
   currentQuestionIndex++;
-
   if (currentQuestionIndex === questions.length) {
     quizEnd();
   } else {
-    getQuestion();
+    displayQuestion();
   }
 }
 
-// function for quiz end
+// end quiz
+
 function quizEnd() {
-  clearInterval(timerId); // Stop the timer
-  questionsEl.classList.add("hide");
+  clearInterval(timerId);
+  var endScreenEl = document.getElementById("quiz-end");
+  endScreenEl.removeAttribute("class");
   var finalScoreEl = document.getElementById("score-final");
   finalScoreEl.textContent = time;
-  var quizEndEl = document.getElementById("quiz-end");
-  quizEndEl.classList.remove("hide");
+  questionsEl.setAttribute("class", "hide");
+}
+
+// end quiz if timer reaches 0
+
+function clockTick() {
+  time--;
+  timerEl.textContent = time;
+  if (time <= 0) {
+    quizEnd();
+  }
+}
+
+// save score in local storage
+
+function saveHighscore() {
+  var name = nameEl.value.trim();
+  if (name !== "") {
+    var highscores =
+      JSON.parse(window.localStorage.getItem("highscores")) || [];
+    var newScore = {
+      score: time,
+      name: name,
+    };
+    highscores.push(newScore);
+    window.localStorage.setItem("highscores", JSON.stringify(highscores));
+  }
+}
+nameEl.onkeyup = checkForEnter;
+submitBtn.onclick = saveHighscore;
+startBtn.onclick = quizStart;
+
+function checkForEnter(event) {
+  if (event.key === "Enter") {
+    saveHighscore();
+    var queryString = new URLSearchParams({ name: nameEl.value, score: time });
+    window.location.href = "highscore.html?" + queryString.toString();
+  }
 }
