@@ -169,3 +169,13 @@ function questionClick(event) {
     getQuestion();
   }
 }
+
+// function for quiz end
+function quizEnd() {
+  clearInterval(timerId); // Stop the timer
+  questionsEl.classList.add("hide");
+  var finalScoreEl = document.getElementById("score-final");
+  finalScoreEl.textContent = time;
+  var quizEndEl = document.getElementById("quiz-end");
+  quizEndEl.classList.remove("hide");
+}
