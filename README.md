@@ -1,15 +1,15 @@
 # js-quiz
 
-# Link [
+## Link [
 ](https://daveerr.github.io/js-quiz/)
 
 # Description
 10 question timed quiz on basics about coding
 
-## Installation
+# Installation
 none
 
-## Usage
+# Usage
 To take test click on link to site, score will be given at the end with option to add name and have it saved. To see your name and score click on highscores button.
 
 
