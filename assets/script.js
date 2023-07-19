@@ -1,3 +1,4 @@
+// questions and answers
 var questions = [
   {
     numb: 1,
@@ -93,17 +94,17 @@ var currentQuestionIndex = 0;
 var time = questions.length * 15;
 var timerId;
 
-// Event listener for the "Start Quiz" button click
+// event listener for "Start Quiz" button click
 startBtn.addEventListener("click", function () {
   quizStart();
 });
 
-// Function to start the quiz
+// function to start the quiz
 function quizStart() {
-  var startScreenEl = document.querySelector(".container"); // Correct class name here
+  var startScreenEl = document.querySelector(".container");
   startScreenEl.classList.add("hide");
 
-  var questionsSectionEl = document.getElementById("questions"); // Use getElementById for ID selection
+  var questionsSectionEl = document.getElementById("questions");
   questionsSectionEl.classList.remove("hide");
 
   // Starts the timer
@@ -121,7 +122,7 @@ function clockTick() {
   if (time <= 0) {
     clearInterval(timerId); // Stop the timer
   } else {
-    timerEl.textContent = time; // Update the timer display
+    timerEl.textContent = time;
   }
 }
 
@@ -162,7 +163,6 @@ function questionClick(event) {
   // move to the next question
   currentQuestionIndex++;
 
-  // check if the quiz is finished
   if (currentQuestionIndex === questions.length) {
     quizEnd();
   } else {
